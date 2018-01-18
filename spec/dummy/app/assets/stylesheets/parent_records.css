@@ -1,0 +1,8 @@
+/*
+  Place all the styles related to the matching controller here.
+  They will automatically be included in application.css.
+*/
+.ajax-processing {
+   padding: 10px;
+   background: white  asset-data-url('ui-anim_basic_16x16.gif') right center no-repeat;
+}

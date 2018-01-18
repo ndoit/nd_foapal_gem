@@ -10,6 +10,8 @@
 # Ignore the default SQLite database.
 /db/*.sqlite3
 /db/*.sqlite3-journal
+/spec/dummy/db/*.sqlite3
+/spec/dummy/db/*.sqlite3-journal
 
 # Ignore all logfiles and tempfiles.
 /log/*.log
@@ -17,6 +19,12 @@
 /tmp/cache
 /tmp/pids
 /tmp/sockets
+/spec/dummy/log/*.log
+/spec/dummy/tmp
+/spec/dummy/tmp/cache
+/spec/dummy/tmp/pids
+/spec/dummy/tmp/sockets
+
 /.env.*
 config/unicorn.rb
 config/hire_right_nginx_local
