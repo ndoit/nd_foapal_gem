@@ -1,0 +1,31 @@
+
+<table id="foapal_table">
+  <thead>
+    <tr>
+      <td style="width: 14%;">Fund</td>
+      <td style="width: 14%;">Orgn</td>
+      <td style="width: 14%;">Acct</td>
+      <td style="width: 14%;">Prog</td>
+      <td style="width: 14%;">Actv</td>
+      <td style="width: 14%;">Locn</td>
+      <td style="width: 14%;">Amount</td>
+      <td style="width: 2%;">&nbsp;</td>
+    </tr>
+  </thead>
+  <tbody>
+    <%= pr.fields_for :foapal_entries do |builder| %>
+        <%= render 'foapal_entry_fields_acct_full', { :f => builder} %>
+    <% end %>
+    <tr id="foapal_table_add_row">
+      <td  colspan="5" rowspan="2">
+        <div class="row">
+          <div class="large-6 medium-6 small-12 left column">
+          <!-- link_to_add_association functionality comes from the cocoon gem -->
+            <%= link_to_add_association "Add FOAPAL", pr, :foapal_entries,
+            { "data-association-insertion-node" => "#foapal_table_add_row", "style" => "margin-bottom: .5rem;", :class => "button small", :id => "b_foapal_insert", :partial => "foapal_entry_fields_acct_full" } %>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="columns left small-12">
+    <h1>Parent Record <%= @parent_record.id %></h1>
+    <p id="notice"><%= notice %></p>
+
+    <p>
+      <strong>Parent:</strong>
+      <%= @parent_record.name %>
+    </p>
+    <p>
+      <strong>Orgn:</strong>
+      <%= @parent_record.orgn %> - <%= @parent_record.orgn_description %>
+    </p>
+
+    <strong>FOAPALs</strong>
+    <table>
+      <thead>
+      <tr>
+        <td style="width: 14%;">Fund</td>
+        <td style="width: 14%;">Orgn</td>
+        <td style="width: 14%;">Acct</td>
+        <td style="width: 14%;">Prog</td>
+        <td style="width: 14%;">Actv</td>
+        <td style="width: 14%;">Locn</td>
+        <td style="width: 16%;">Amount</td>
+
+      </tr>
+    </thead>
+    <tbody>
+    <% @parent_record.foapal_entries.each do |f| %>
+      <%= render "foapal_entries_show", d: f %>
+    <% end %>
+    </tbody>
+    </table>
+    <hr />
+    <%= link_to 'Edit', edit_parent_record_path(@parent_record), class: 'button small' %>
+  </div>
+</div>

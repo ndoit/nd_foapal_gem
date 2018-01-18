@@ -1,0 +1,25 @@
+
+<div id="foapal_table">
+  <div class="row">
+      <div class="columns small-1" style="min-width: 100px;">Fund</div>
+      <div class="columns small-1" style="min-width: 100px;">Orgn</div>
+      <div class="columns small-1" style="min-width: 100px;">Acct</div>
+      <div class="columns small-1" style="min-width: 100px;">Prog</div>
+      <div class="columns small-1" style="min-width: 100px;">Actv</div>
+      <div class="columns small-1" style="min-width: 100px;">Locn</div>
+      <div class="columns small-1" style="min-width: 100px;">Percent</div>
+      <div class="columns small-1" >&nbsp;</div>
+  </div>
+  <%= pr.fields_for :payroll_accounts_foapal_entries do |builder| %>
+        <%= render 'foapal_entry_fields_acct', { :f => builder} %>
+  <% end %>
+  <div id="foapal_table_add_row">
+    <div class="row">
+          <div class="large-6 medium-6 small-12 left column">
+          <!-- link_to_add_association functionality comes from the cocoon gem -->
+            <%= link_to_add_association "Add FOAPAL", pr, :payroll_accounts_foapal_entries,
+            { "data-association-insertion-node" => "#foapal_table_add_row", "style" => "margin-bottom: .5rem;", :class => "button small", :id => "b_foapal_insert", :partial => "foapal_entry_fields_acct" } %>
+          </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,54 @@
+<script type="text/javascript">
+$(document).ready(function(){
+  nd_foapal_initialize();
+});
+$(document).on('keyup keypress', 'form input[type="text"]', function(e) {
+  if(e.keyCode == 13) {
+    e.preventDefault();
+    return false;
+  }
+});
+</script>
+    <%= form_for(@parent_record) do |pr| %>
+      <% if @parent_record.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@parent_record.errors.count, "error") %> prohibited this parent_record from being saved:</h2>
+
+          <ul>
+          <% @parent_record.errors.values.each do |message| %>
+            <% message.each do |m| %>
+            <li><%= m %></li>
+            <% end %>
+          <% end %>
+          </ul>
+        </div>
+      <% end %>
+      <div class="row">
+        <div class="columns left small-6">
+          <div class="field">
+            <%= pr.label :name %><br>
+            <%= pr.text_field :name %>
+          </div>
+        </div>
+        <div class="columns left small-2">
+          <div class="field">
+            <%= pr.label :orgn %><br>
+            <%= pr.text_field :orgn, id: 'pr_0_orgn', class: 'orgn_full_input' %>
+          </div>
+        </div>
+        <div class="columns left small-4">
+          <div class="field">
+            <%= pr.label :orgn_description %><br>
+            <%= pr.text_field :orgn_description, id: 'pr_0_orgn_description', class: 'orgn_description_input', readonly: true %>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+          <%= render 'foapals_acct_full_table', pr: pr %>
+      </div>
+      <div class="actions">
+        <%= pr.submit %>
+      </div>
+
+    <% end %>

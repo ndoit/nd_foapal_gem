@@ -1,0 +1,30 @@
+<% fund_title = f.object.fund.to_s + ' - ' + f.object.fund_description.to_s unless f.object.fund_description.blank? %>
+<% orgn_title = f.object.orgn.to_s + ' - ' + f.object.orgn_description.to_s unless f.object.orgn_description.blank? %>
+<% acct_title = f.object.acct.to_s + ' - ' + f.object.acct_description.to_s unless f.object.acct_description.blank? %>
+<% prog_title = f.object.prog.to_s + ' - ' + f.object.prog_description.to_s unless f.object.prog_description.blank? %>
+<% actv_title = f.object.actv.to_s + ' - ' + f.object.actv_description.to_s unless f.object.actv_description.blank? %>
+<% locn_title = f.object.locn.to_s + ' - ' + f.object.locn_description.to_s unless f.object.locn_description.blank? %>
+
+<div class="row nested-fields foapal_table_data_row">
+  <div class="columns small-1" style="min-width: 100px;"><%= f.text_field :fund, class: 'fund_input', :placeholder => 'Fund', :title => fund_title %>
+      <%= f.hidden_field :fund_description, class: 'fund_description_input' %>
+      <%= f.hidden_field :fund_type, class: 'fund_type_input' %>
+      <%= f.hidden_field :predecessor_fund_type, class: 'predecessor_fund_type_input' %></div>
+  <div class="columns small-1" style="min-width: 100px;"><%= f.text_field :orgn, class: 'orgn_input', :placeholder => 'Orgn', :title => orgn_title %>
+      <%= f.hidden_field :orgn_description, class: 'orgn_description_input' %></div>
+  <div class="columns small-1" style="min-width: 100px;"><%= f.text_field :acct, class: 'acct_input', :placeholder => 'Acct', :title => acct_title  %>
+      <%= f.hidden_field :acct_description, class: 'acct_description_input' %>
+      <%= f.hidden_field :acct_type, class: 'acct_type_input' %>
+      <%= f.hidden_field :acct_class, class: 'acct_class_input' %>
+      <%= f.hidden_field :predecessor_acct_type, class: 'predecessor_acct_type_input' %></div>
+  <div class="columns small-1" style="min-width: 100px;"><%= f.text_field :prog, class: 'prog_input', :placeholder => 'Prog', :title => prog_title  %>
+      <%= f.hidden_field :prog_description, class: 'prog_description_input' %></div>
+  <div class="columns small-1" style="min-width: 100px;"><%= f.text_field :actv, class: 'actv_input', :placeholder => '', :title => actv_title  %>
+      <%= f.hidden_field :actv_description, class: 'actv_description_input' %></div>
+  <div class="columns small-1" style="min-width: 100px;"><%= f.text_field :locn, class: 'locn_input', :placeholder => '', :title => locn_title  %>
+      <%= f.hidden_field :locn_description, class: 'locn_description_input' %></div>
+  <div class="columns small-1" style="min-width: 100px;"><%= f.text_field :foapal_percent_string, class: 'foapal_percent percent_input text-right add_foapal_row_on_return',
+  :value =>(number_with_precision(f.object.foapal_percent, precision: 2, delimiter: ',')), :placeholder => 'Percent' %></div>
+  <!-- link_to_remove_association functionality comes from the cocoon gem -->
+   <div class="columns remove_foapal_td small-1"><%= link_to_remove_association image_tag("x_16x16.png", :border=>0, :alt=>"Remove FOAPAL", :title=>"Remove FOAPAL", :tabIndex=>"500"), f %></div>
+</div>

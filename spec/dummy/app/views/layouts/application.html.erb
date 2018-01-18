@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>ND Foapal Gem Sample Application</title>
+    <%= javascript_include_tag "default" %>
+
+    <%= stylesheet_link_tag    "default" %>
+    <%= csrf_meta_tags %>
+  </head>
+
+  <body>
+    <div class="contain-to-grid sticky" id="the-top-bar">
+      <nav class="top-bar" data-topbar>
+        <div class="top-bar-section">
+          <ul >
+            <li class="divider"></li>
+            <li><a href="/parent_records">All Accounts Can Be Used</a></li>
+            <li class="divider"></li>
+            <li><a href="/payroll_accounts_parent_records">Only Payroll Accounts Can be used</a></li>
+
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <%= yield %>
+  </body>
+</html>

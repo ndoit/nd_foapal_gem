@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="columns small-12">
+    <p id="notice"><%= notice %></p>
+
+      <h1>Listing Parent Records - Only Payroll Accounts can be used</h1>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th colspan="3"></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @parent_records.each do |parent_record| %>
+            <tr>
+              <td><%= parent_record.name %></td>
+              <td><%= link_to 'Show', parent_record %></td>
+              <td><%= link_to 'Edit', edit_payroll_accounts_parent_record_path(parent_record) %></td>
+              <td><%= link_to 'Destroy', parent_record, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+</div>
+<div class="row">
+  <div class="columns small-6">
+    <%= link_to 'Add new', new_payroll_accounts_parent_record_path %>
+  </div>
+</div>

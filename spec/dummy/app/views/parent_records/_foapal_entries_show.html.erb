@@ -1,0 +1,11 @@
+<tr class="nested-fields">
+  <td><span title="<% unless d.fund_description.blank? %><%= d.fund %> - <%= d.fund_description %><% end %>" class="fund_span"><%= d.fund %></span></td>
+  <td><span title="<% unless d.orgn_description.blank? %><%= d.orgn %> - <%= d.orgn_description %><% end %>" class="orgn_span"><%= d.orgn %></span></td>
+  <td><span title="<% unless d.acct_description.blank? %><%= d.acct %> - <%= d.acct_description %><% end %>" class="acct_span"><%= d.acct %></span></td>
+  <td><span title="<% unless d.prog_description.blank? %><%= d.prog %> - <%= d.prog_description %><% end %>" class="prog_span"><%= d.prog %></span></td>
+  <td><span title="<% unless d.actv_description.blank? %><%= d.actv %> - <%= d.actv_description %><% end %>" class="actv_span"><%= d.actv %></span></td>
+  <td><span title="<% unless d.locn_description.blank? %><%= d.locn %> - <%= d.locn_description %><% end %>" class="locn_span"><%= d.locn %></span></td>
+  <td class="text-right" style="padding-right: 0.4rem;"><%= number_to_currency(d.foapal_amount) %></td>
+  <td><%= d.is_grant_or_cost_share_fund.to_s %></td>
+  <td><%= d.rspa_accountant_net_id %>: <%= d.rspa_accountant_first_name %> <%= d.rspa_accountant_last_name %></td>
+</tr>
