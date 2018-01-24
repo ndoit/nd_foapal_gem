@@ -256,7 +256,7 @@ function setAcctDataAutocomplete( data_type, p_data) {
     var foapal_row_object = $('#foapal_table .foapal_table_data_row').eq(foapal_row_n);
     var a_target_fld = $(foapal_row_object[0]).find('input.acct_full_input');
     if (a_target_fld.length == 0) {
-      var a_target_fld = $(foapal_row_object[0]).find('input.acct_input');
+      var a_target_fld = $(foapal_row_object[0]).find('input.acct_data_input');
     }
     var acct_target = '#' + a_target_fld[0].id;
     var acct_description = '#' + $(foapal_row_object[0]).find('input.acct_description_input')[0].id;
@@ -874,20 +874,20 @@ function setInitialAcctDataAutocomplete() {
       acctCodes.push(acctData[i].value);
     }
     for (i = 0; i < foapal_data_rows.length; i++) {
-      var acct_input_element = $(foapal_data_rows[i]).find('.acct_input')[0];
-      var current_account_value = acct_input_element.value;
+      var acct_data_input_element = $(foapal_data_rows[i]).find('.acct_data_input')[0];
+      var current_account_value = acct_data_input_element.value;
       if (acctData.length > 1) {
         if (current_account_value != "" && acctCodes.indexOf(current_account_value) < 0) {
-            acct_input_element.value = "";
-            acct_input_element.title = "";
+            acct_data_input_element.value = "";
+            acct_data_input_element.title = "";
         }
         setAcctDataAutocomplete("rn",i);
-        acct_input_element.readOnly = false;
+        acct_data_input_element.readOnly = false;
       }
       else {
-          acct_input_element.value = acctData[0].value;
-          acct_input_element.title = acctData[0].label;
-          acct_input_element.readOnly = true;
+          acct_data_input_element.value = acctData[0].value;
+          acct_data_input_element.title = acctData[0].label;
+          acct_data_input_element.readOnly = true;
       }
     }
 }

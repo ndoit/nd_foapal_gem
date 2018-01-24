@@ -61,7 +61,7 @@ View: spec\dummy\app\views\parent_records\_foapals_acct_full_table.html.erb & _f
 
 ### Restricting account codes to a specific list ###
 Some projects will require that account codes are limited to a specific list.  For example Labor Distribution Changes and New Job Actions.
-To accomplish this functionality, the account input fields in the FOAPAL rows must have a class of acct_input and a global javascript variable
+To accomplish this functionality, the account input fields in the FOAPAL rows must have a class of acct_data_input and a global javascript variable
 acctData must be populated with an array of hashes.
 
 A method for generating the appropriate acctData json result for Payroll accounts based on
@@ -125,5 +125,5 @@ search_results = f.search
 
 ### Who do I talk to? ###
 
-* Teresa Meyer (tmeyer2@nd.edu) 
+* Teresa Meyer (tmeyer2@nd.edu)
 * Employee Finance Solutions
