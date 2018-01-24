@@ -1,0 +1,42 @@
+<script type="text/javascript">
+  var orgnData = <%=raw @orgnData %>;
+  $(document).ready(function(){
+    nd_foapal_initialize();
+  });
+</script>
+    <%= form_for(@limited_org_test) do |pr| %>
+      <div class="row">
+        <div class="columns left small-6">
+          <div class="field">
+            <%= pr.label :name %><br>
+            <%= pr.text_field :name %>
+          </div>
+        </div>
+        <div class="columns left small-2">
+          <div class="field">
+            <%= pr.label :orgn_one %><br>
+            <%= pr.text_field :orgn_one, id: 'pr_0_orgn', class: 'orgn_data_input' %>
+          </div>
+        </div>
+        <div class="columns left small-4">
+          <div class="field">
+            <%= pr.label :orgn_one_description %><br>
+            <%= pr.text_field :orgn_one_description, id: 'pr_0_orgn_description', class: 'orgn_data_description_input', readonly: true %>
+          </div>
+        </div>
+        <div class="columns left small-2">
+          <div class="field">
+            <%= pr.label :orgn_two %><br>
+            <%= pr.text_field :orgn_two, id: 'pr_1_orgn', class: 'orgn_data_input' %>
+          </div>
+        </div>
+        <div class="columns left small-4">
+          <div class="field">
+            <%= pr.label :orgn_two_description %><br>
+            <%= pr.text_field :orgn_two_description, id: 'pr_1_orgn_description', class: 'orgn_data_description_input', readonly: true %>
+          </div>
+        </div>
+
+      </div>
+
+    <% end %>

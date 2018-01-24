@@ -76,6 +76,16 @@ Controller: spec\dummy\app\controllers\payroll_accounts_parent_records_controlle
 Model: spec\dummy\app\models\payroll_accounts_parent_record.rb  see method acctDataForJavascript
 View: spec\dummy\app\views\payroll_accounts_parent_records\_form.html.erb   see where var acctData is being set.
 
+### Restricting orgn codes to a specific list ###
+Some projects will require that orgn codes are limited to a specific list.
+To accomplish this functionality, an orgn input field can have a class of orgn_data_input and a global javascript variable
+orgnData must be populated with an array of hashes.
+
+Example:
+Controller: spec\dummy\app\controllers\limited_org_tests_controller.rb  see method new.
+View: spec\dummy\app\views\limited_org_tests\_form.html.erb   see where var orgnData is being set and orgn_data_input fields and corresponding orgn_data_description_input fields are available..
+
+
 ### Determining Grant/Cost Share Funds and retrieving RSPA accountant information ###
 The model NdFoapalGem::Fund can be used to determine if a fund is a grant or cost share fund and then to retrieve the responsible RSPA
 accountant.  Initialize an instance of Fund (f) via NdFoapalGem::Fund(fund).  You can immediately determine if the fund is a grant or cost share
