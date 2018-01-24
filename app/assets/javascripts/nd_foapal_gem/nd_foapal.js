@@ -1,6 +1,7 @@
 function nd_foapal_initialize() {
     setupFoapalAutocomplete();
-    setOrgnDataFullAutocomplete();
+    setOrgnFullAutocomplete();
+    setOrgnDataAutocomplete();
     loadInitialFoapalAutocomplete();
     $('#foapal_table').on('cocoon:after-insert', function(e, insertedRow) {
       setupFoapalAutocomplete();
@@ -305,6 +306,57 @@ function setAcctDataAutocomplete( data_type, p_data) {
   }
 }
 
+/*******************************************/
+function setOrgnDataAutocomplete() {
+
+  if (typeof orgnData === "undefined") {
+    return;
+  }
+
+  $('.orgn_data_input').prop('readOnly', false);
+
+  var orgn_data_input_fields = document.getElementsByClassName("orgn_data_input");
+
+  for (i=0;i<orgn_data_input_fields.length;i++) {
+    if ($(orgn_data_input_fields[i]).data('autocomplete')) {
+      $(orgn_data_input_fields[i]).autocomplete("destroy");
+      $(orgn_data_input_fields[i]).removeData('autocomplete');
+    }
+    if ( orgnData.length == 0) {
+      $(orgn_data_input_fields[i]).removeClass('ui-autocomplete-loading');
+    }
+
+  }
+
+  if ( orgnData.length == 0) {
+    return;
+  }
+
+  if (orgnData.length == 1) {
+    $('.orgn_data_input').val( orgnData[0].value);
+    $('.orgn_data_input').prop('title',orgnData[0].label);
+    $('.orgn_data_input').prop('readOnly',true);
+    var tstr = orgnData[0].label.split(" ");
+    tstr.shift();
+    tstr.shift();
+    $('.orgn_data_description_input').val(tstr.join(" "));
+    return;
+  }
+
+  $('.orgn_data_input').autocomplete({
+          source: orgnData,
+          select: function (event, ui) {
+            setFoapalPartTitle(this, "orgn", ui.item.value);
+          },
+          minLength: 0
+  })
+  .focus( function() {
+    $(this).autocomplete( "search");
+  });
+  $('.ui-autocomplete').addClass('f-dropdown');
+  $('.orgn_data_input').prop('readOnly',false);
+}
+
 function setFundDataAutocomplete() {
   var lookup_url = "/nd_foapal_gem/fop_data/fund/";
 
@@ -432,7 +484,7 @@ function setFullAcctActvLocnAutocomplete(data_type) {
 
 }
 
-function setOrgnDataFullAutocomplete() {
+function setOrgnFullAutocomplete() {
   var lookup_url = "/nd_foapal_gem/fop_data/orgn/";
 
   $(".orgn_full_input").change( function ( event) {
