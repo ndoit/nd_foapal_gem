@@ -4,7 +4,7 @@ module NdFoapalGem
   RSpec.describe Acct, type: :model do
 
     it "sets account attributes" do
-      acct_array = [{"acct":"72001","acct_title":"Supplies","acct_type":"71","predecessor_acct_type":"70","acct_class":nil}]
+      acct_array = [{"acct" => "72001","acct_title" => "Supplies","acct_type" => "71","predecessor_acct_type" => "70","acct_class" => nil}]
       expect_any_instance_of(NdFoapalGem::FoapalData).to receive(:search).and_return(acct_array)
       a = NdFoapalGem::Acct.new('72001')
       a.set_acct_attributes
