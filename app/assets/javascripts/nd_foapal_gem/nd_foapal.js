@@ -398,6 +398,7 @@ function setFundDataAutocomplete() {
       }
 
   })
+  .unbind('change')
   .change( function( event) {
       setFoapalPartTitle(this,"fund",event.currentTarget.value)
       setOrgnData( "sib", this, event.currentTarget.value);
@@ -487,7 +488,7 @@ function setFullAcctActvLocnAutocomplete(data_type) {
 function setOrgnFullAutocomplete() {
   var lookup_url = "/nd_foapal_gem/fop_data/orgn/";
 
-  $(".orgn_full_input").change( function ( event) {
+  $(".orgn_full_input").unbind('change').change( function ( event) {
     setFoapalPartTitle(this,"orgn",event.currentTarget.value);
     $( this ).removeClass( "ui-autocomplete-loading" )
   });
@@ -555,7 +556,7 @@ function setOrgnData ( data_type, p_data, fund_value) {
     $(org_desc_field).val("");
   }
 
-  $(org_field).change( function ( event) {
+  $(org_field).unbind('change').change( function ( event) {
     setFoapalPartTitle(this,"orgn",event.currentTarget.value)
     setProgData( "sib", this, event.currentTarget.value);
     $( this ).removeClass( "ui-autocomplete-loading" )
@@ -669,7 +670,7 @@ function setProgData ( data_type, p_data, orgn_value) {
     $(prog_desc_field).val("");
   }
 
-  $(prog_field).change( function ( event) {
+  $(prog_field).unbind('change').change( function ( event) {
     event.stopImmediatePropagation();
     setFoapalPartTitle(this,"prog",event.currentTarget.value)
     $( this ).removeClass( "ui-autocomplete-loading" )
