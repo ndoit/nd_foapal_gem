@@ -11,10 +11,11 @@ This Rails plug in provides FOAPAL related functionality.  Functionality include
 
 ### Installation ###
 
-Add the following to your Gemfile, then run ```bundle install```
+Add the following to your Gemfile (or similar if the foapal version has changed), then run ```bundle install```
 ```
 gem 'dotenv' # if does not already exist
 gem 'cocoon' # if does not already exist
+gem 'nd_foapal_gem', '~> 0.1.0', git: 'git@bitbucket.org:nd-oit/nd_foapal_gem.git'
 ```
 
 Add following to application.js

@@ -16,4 +16,5 @@ gem 'dotenv'
 gem 'cocoon'
 group :development, :test do
   gem 'cucumber-rails', require: false
+  gem 'rspec_junit_formatter'
 end

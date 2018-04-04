@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180115182837) do
+ActiveRecord::Schema.define(version: 20180124033141) do
 
   create_table "foapal_entries", force: :cascade do |t|
     t.string   "fund"
@@ -41,6 +41,19 @@ ActiveRecord::Schema.define(version: 20180115182837) do
     t.datetime "updated_at"
   end
 
+<<<<<<< HEAD
+=======
+  create_table "limited_org_tests", force: :cascade do |t|
+    t.string   "name"
+    t.string   "orgn_one"
+    t.string   "orgn_one_description"
+    t.string   "orgn_two"
+    t.string   "orgn_two_description"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+>>>>>>> d946a9207734c85be425e13c8ce31deba0d4450b
   create_table "parent_records", force: :cascade do |t|
     t.string   "name"
     t.string   "orgn"
