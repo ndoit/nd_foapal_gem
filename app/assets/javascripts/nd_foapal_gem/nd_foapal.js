@@ -797,7 +797,9 @@ function setProgData ( data_type, p_data, orgn_value) {
                   },
                   minLength: 0
                 })
-                .focus( function() { $(this).autocomplete( "search"); });
+                .focus( function() {
+                  if ($(this).hasClass('ui-autocomplete-input')) $(this).autocomplete( "search");
+                });
           }
           $(prog_field).removeClass('ui-autocomplete-loading');
         }
