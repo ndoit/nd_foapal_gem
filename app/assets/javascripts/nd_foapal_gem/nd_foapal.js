@@ -279,9 +279,9 @@ function setAcctDataAutocomplete( data_type, p_data) {
     var acct_target = '#' + a_target_fld[0].id;
     var acct_description = '#' + $(foapal_row_object[0]).find('input.acct_description_input')[0].id;
   }
-  if ($(acct_target).data('ui-autocomplete-input')) {
+  if ($(acct_target).hasClass('ui-autocomplete-input')) {
     $(acct_target).autocomplete("destroy");
-    $(acct_target).removeData('ui-autocomplete-input');
+    $(acct_target).removeClass('ui-autocomplete-input');
   }
   $(acct_target)
      .prop('readOnly', false);
@@ -335,9 +335,9 @@ function setOrgnDataAutocomplete() {
   var orgn_data_input_fields = document.getElementsByClassName("orgn_data_input");
 
   for (i=0;i<orgn_data_input_fields.length;i++) {
-    if ($(orgn_data_input_fields[i]).data('ui-autocomplete-input')) {
+    if ($(orgn_data_input_fields[i]).hasClass('ui-autocomplete-input')) {
       $(orgn_data_input_fields[i]).autocomplete("destroy");
-      $(orgn_data_input_fields[i]).removeData('ui-autocomplete-input');
+      $(orgn_data_input_fields[i]).removeClass('ui-autocomplete-input');
     }
     if ( orgnData.length == 0) {
       $(orgn_data_input_fields[i]).removeClass('ui-autocomplete-loading');
@@ -553,9 +553,9 @@ function setDescriptionField ( foapal_element, code_field, list_label) {
 function clearOrgnData (  p_data) {
   var org_field = "#" + getNewInputFieldName( p_data, "orgn");
   var org_desc_field = "#" + getNewInputFieldName( p_data, "orgn_description");
-  if ($(org_field).data('ui-autocomplete-input')) {
+  if ($(org_field).hasClass('ui-autocomplete-input')) {
     $(org_field).autocomplete("destroy");
-    $(org_field).removeData('ui-autocomplete-input');
+    $(org_field).removeClass('ui-autocomplete-input');
   }
   $(org_field)
     .prop('readOnly', false)
@@ -587,9 +587,9 @@ function setOrgnData ( data_type, p_data, fund_value) {
 
   var orgList;
 
-  if ($(org_field).data('ui-autocomplete-input')) {
+  if ($(org_field).hasClass('ui-autocomplete-input')) {
     $(org_field).autocomplete("destroy");
-    $(org_field).removeData('ui-autocomplete-input');
+    $(org_field).removeClass('ui-autocomplete-input');
   }
   $(org_field)
      .prop('readOnly', false)
@@ -681,9 +681,9 @@ function setOrgnData ( data_type, p_data, fund_value) {
 function clearProgData (  p_data) {
   var prog_field = "#" + getNewInputFieldName( p_data, "prog");
   var prog_desc_field = "#" + getNewInputFieldName( p_data, "prog_description");
-  if ($(prog_field).data('ui-autocomplete-input')) {
+  if ($(prog_field).hasClass('ui-autocomplete-input')) {
     $(prog_field).autocomplete("destroy");
-    $(prog_field).removeData('ui-autocomplete-input');
+    $(prog_field).removeClass('ui-autocomplete-input');
   }
   $(prog_field)
     .prop('readOnly', false)
@@ -721,9 +721,9 @@ function setProgData ( data_type, p_data, orgn_value) {
 
   if (fund_value == "") return;
 
-  if ($(prog_field).data('ui-autocomplete-input')) {
+  if ($(prog_field).hasClass('ui-autocomplete-input')) {
     $(prog_field).autocomplete("destroy");
-    $(prog_field).removeData('ui-autocomplete-input');
+    $(prog_field).removeClass('ui-autocomplete-input');
   }
   $(prog_field)
      .prop('readOnly', false)
