@@ -10,7 +10,7 @@ function nd_foapal_initialize() {
 }
 
 function onReadySetFoapalTitlesOnly() {
-  var foap_parts = ["fund","orgn","acct","prog","actv","prog"];
+  var foap_parts = ["fund","orgn_data","orgn_full","acct_data","acct_full","prog","actv","prog"];
   for (j = 0; j < foap_parts.length; j++) {
     $('.' + foap_parts[j] + '_span').mouseenter( function() {
       if (this.title == "") {
@@ -22,7 +22,7 @@ function onReadySetFoapalTitlesOnly() {
 }
 
 function onReadySetFoapalTitlesDescriptions() {
-  var foap_parts = ["fund","orgn","acct","acct_full","prog","actv","prog"];
+  var foap_parts = ["fund","orgn_data","orgn_full","acct_data","acct_full","prog","actv","prog"];
   for (j = 0; j < foap_parts.length; j++) {
     $('.' + foap_parts[j] + '_input').mouseenter( function() {
       if (this.title == "" && this.value.length > 4) {
@@ -169,20 +169,20 @@ function setLocnTitle(input_field,banner_data) {
 }
 
 function setFoapalPartTitle(input_field,data_type,search_value) {
-
-  var lookup_url = "/nd_foapal_gem/fop_data/" + data_type + "/" + search_value;
+  var data_type_base = data_type.substring(0,4);
+  var lookup_url = "/nd_foapal_gem/fop_data/" + data_type_base + "/" + search_value;
   if (search_value == 'Error' || search_value == 'No match') return;
   $.ajax({
         url: lookup_url,
         dataType: "json",
         data: {},
         error: function(XMLHttpRequest, textStatus, errorThrown) {
-              do_alert("FOAP[AL] description lookup error for " + data_type + ". Please confirm that the financial data web services are running. (" + textStatus + " | " + errorThrown + ")");
+              do_alert("FOAP[AL] description lookup error for " + data_type_base + ". Please confirm that the financial data web services are running. (" + textStatus + " | " + errorThrown + ")");
         },
         success: function (data) {
           $(input_field).removeClass('ui-autocomplete-loading');
           if (data.length == 1) {
-          switch(data_type) {
+          switch(data_type_base) {
             case "fund":
                 setFundTitleDescriptionType(input_field,data[0]);
                 break;
@@ -206,6 +206,23 @@ function setFoapalPartTitle(input_field,data_type,search_value) {
         }
     });
 
+}
+
+function setFoapalPartsTitles(row_number,foap_parts) {
+  var foapal_fields = ["fund","orgn_data","orgn_full","acct_data","acct_full", "prog","actv","locn"];
+  var foapal_fields_index = 0;
+  for (j = 0; j < foap_parts.length; j++)  {
+    var row_string = '.foapal_table_data_row:nth-child(' + row_number + ')';
+    var input_field_string = '.' + foapal_fields[foapal_fields_index] + '_input:first';
+    var input_fld = $(row_string + ' ' + input_field_string );
+    if (input_fld.length == 0) {
+      foapal_fields_index++;
+      var input_field_string = '.' + foapal_fields[foapal_fields_index] + '_input:first';
+      input_fld = $(row_string + ' ' + input_field_string );
+    }
+    setFoapalPartTitle(input_fld, foapal_fields[foapal_fields_index], foap_parts(j));
+    foapal_fields_index++;
+  }
 }
 
 function setupAcctDataAutocompleteBasedOnEclass( eclass) {
@@ -262,9 +279,9 @@ function setAcctDataAutocomplete( data_type, p_data) {
     var acct_target = '#' + a_target_fld[0].id;
     var acct_description = '#' + $(foapal_row_object[0]).find('input.acct_description_input')[0].id;
   }
-  if ($(acct_target).data('autocomplete')) {
+  if ($(acct_target).data('ui-autocomplete-input')) {
     $(acct_target).autocomplete("destroy");
-    $(acct_target).removeData('autocomplete');
+    $(acct_target).removeData('ui-autocomplete-input');
   }
   $(acct_target)
      .prop('readOnly', false);
@@ -318,9 +335,9 @@ function setOrgnDataAutocomplete() {
   var orgn_data_input_fields = document.getElementsByClassName("orgn_data_input");
 
   for (i=0;i<orgn_data_input_fields.length;i++) {
-    if ($(orgn_data_input_fields[i]).data('autocomplete')) {
+    if ($(orgn_data_input_fields[i]).data('ui-autocomplete-input')) {
       $(orgn_data_input_fields[i]).autocomplete("destroy");
-      $(orgn_data_input_fields[i]).removeData('autocomplete');
+      $(orgn_data_input_fields[i]).removeData('ui-autocomplete-input');
     }
     if ( orgnData.length == 0) {
       $(orgn_data_input_fields[i]).removeClass('ui-autocomplete-loading');
@@ -386,9 +403,17 @@ function setFundDataAutocomplete() {
     },
     minLength: 1,
     select: function (event, ui) {
-      setFoapalPartTitle(this, "fund", ui.item.value);
-      setOrgnData( "sib", this, ui.item.value);
-      setAcctDataAutocomplete( "sib", this);
+//      setFoapalPartTitle(this, "fund", ui.item.value);
+//      setOrgnData( "sib", this, ui.item.value);
+//      setAcctDataAutocomplete( "sib", this);
+      clearOrgnData(this);
+      clearProgData(this);
+    },
+    change: function( event) {
+        setFoapalPartTitle(this,"fund",event.currentTarget.value)
+        setOrgnData( "sib", this, event.currentTarget.value);
+        setAcctDataAutocomplete( "sib", this);
+        $( this ).removeClass( "ui-autocomplete-loading" )
     },
       open: function() {
         $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
@@ -397,13 +422,6 @@ function setFundDataAutocomplete() {
         $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
       }
 
-  })
-  .unbind('change')
-  .change( function( event) {
-      setFoapalPartTitle(this,"fund",event.currentTarget.value)
-      setOrgnData( "sib", this, event.currentTarget.value);
-      setAcctDataAutocomplete( "sib", this);
-      $( this ).removeClass( "ui-autocomplete-loading" )
   });
 
 }
@@ -434,11 +452,6 @@ function setFullAcctActvLocnAutocomplete(data_type) {
     var data_type_label = 'locations';
     break;
   }
-
-  $("." + input_class + "_input").change( function ( event) {
-    setFoapalPartTitle(this,data_type,event.currentTarget.value);
-    $( this ).removeClass( "ui-autocomplete-loading" )
-  });
 
   $("." + input_class + "_input").autocomplete({
     source: function( request, response) {
@@ -476,8 +489,10 @@ function setFullAcctActvLocnAutocomplete(data_type) {
     minLength: 1,
     select: function (event, ui) {
       setFoapalPartTitle(this, data_type, ui.item.value);
+    },
+    change: function(event) {
+      setFoapalPartTitle(this,data_type,event.currentTarget.value);
     }
-
   })
   .focus( function() {
     $(this).autocomplete( "search");
@@ -487,11 +502,6 @@ function setFullAcctActvLocnAutocomplete(data_type) {
 
 function setOrgnFullAutocomplete() {
   var lookup_url = "/nd_foapal_gem/fop_data/orgn/";
-
-  $(".orgn_full_input").unbind('change').change( function ( event) {
-    setFoapalPartTitle(this,"orgn",event.currentTarget.value);
-    $( this ).removeClass( "ui-autocomplete-loading" )
-  });
 
   $(".orgn_full_input").autocomplete({
     source: function( request, response) {
@@ -512,16 +522,22 @@ function setOrgnFullAutocomplete() {
       });
     },
     minLength: 1,
+    delay: 500,
     select: function (event, ui) {
       var label = ui.item.label.split(' - ');
       var banner_data = new Object;
       banner_data.orgn = label[0];
       banner_data.orgn_title = label[1];
       setOrgnTitleDescription(this,banner_data)
+    },
+    change: function ( event) {
+      setFoapalPartTitle(this,"orgn",event.currentTarget.value);
+      $( this ).removeClass( "ui-autocomplete-loading" )
     }
   })
   .focus( function() {
-    $(this).autocomplete( "search");
+    var org_value = $(this).val();
+    if (org_value.length > 0) $(this).autocomplete( "search");
   });
 }
 
@@ -532,6 +548,19 @@ function setDescriptionField ( foapal_element, code_field, list_label) {
   var description = tstr.join(" ");
   var desc_field = "#" + getNewInputFieldName( code_field, foapal_element + "_description");
   $(desc_field).val(description);
+}
+
+function clearOrgnData (  p_data) {
+  var org_field = "#" + getNewInputFieldName( p_data, "orgn");
+  var org_desc_field = "#" + getNewInputFieldName( p_data, "orgn_description");
+  if ($(org_field).data('ui-autocomplete-input')) {
+    $(org_field).autocomplete("destroy");
+    $(org_field).removeData('ui-autocomplete-input');
+  }
+  $(org_field)
+    .prop('readOnly', false)
+    .val('');
+  $(org_desc_field).val('');
 }
 
 function setOrgnData ( data_type, p_data, fund_value) {
@@ -556,16 +585,11 @@ function setOrgnData ( data_type, p_data, fund_value) {
     $(org_desc_field).val("");
   }
 
-  $(org_field).unbind('change').change( function ( event) {
-    setFoapalPartTitle(this,"orgn",event.currentTarget.value)
-    setProgData( "sib", this, event.currentTarget.value);
-    $( this ).removeClass( "ui-autocomplete-loading" )
-  });
   var orgList;
 
-  if ($(org_field).data('autocomplete')) {
+  if ($(org_field).data('ui-autocomplete-input')) {
     $(org_field).autocomplete("destroy");
-    $(org_field).removeData('autocomplete');
+    $(org_field).removeData('ui-autocomplete-input');
   }
   $(org_field)
      .prop('readOnly', false)
@@ -625,23 +649,46 @@ function setOrgnData ( data_type, p_data, fund_value) {
                       }
                     });
                   },
-                  minLength: 0,
-                  select: function (event, ui) {
-                    this.title = ui.item.label;
-                    var tstr = ui.item.label.split(" ");
-                    tstr.shift();
-                    tstr.shift();
+                  minLength: 1,
+//                  select: function (event, ui) {
+//                    this.title = ui.item.label;
+//                    var tstr = ui.item.label.split(" ");
+//                    tstr.shift();
+//                    tstr.shift();
 
-                    $(org_desc_field).val(tstr.join(" "));
-                    setProgData( "sib", this, ui.item.value);
+//                    $(org_desc_field).val(tstr.join(" "));
+//                    setProgData( "sib", this, ui.item.value);
+//                  },
+                  select: function ( event) {
+                    clearProgData(this);
+                  },
+                  change: function ( event) {
+                    setFoapalPartTitle(this,"orgn",event.currentTarget.value)
+                    setProgData( "sib", this, event.currentTarget.value);
+                    $( this ).removeClass( "ui-autocomplete-loading" )
                   }
-                })
-                .focus( function() { $(this).autocomplete( "search"); });
+                });
+              //  .focus( function() { $(this).autocomplete( "search"); });
           }
           $(org_field).removeClass('ui-autocomplete-loading');
         }
   });
 
+
+}
+
+
+function clearProgData (  p_data) {
+  var prog_field = "#" + getNewInputFieldName( p_data, "prog");
+  var prog_desc_field = "#" + getNewInputFieldName( p_data, "prog_description");
+  if ($(prog_field).data('ui-autocomplete-input')) {
+    $(prog_field).autocomplete("destroy");
+    $(prog_field).removeData('ui-autocomplete-input');
+  }
+  $(prog_field)
+    .prop('readOnly', false)
+    .val('');
+  $(prog_desc_field).val('');
 
 }
 
@@ -670,19 +717,13 @@ function setProgData ( data_type, p_data, orgn_value) {
     $(prog_desc_field).val("");
   }
 
-  $(prog_field).unbind('change').change( function ( event) {
-    event.stopImmediatePropagation();
-    setFoapalPartTitle(this,"prog",event.currentTarget.value)
-    $( this ).removeClass( "ui-autocomplete-loading" )
-  });
-
   var fund_value = $(fund_field).val();
 
   if (fund_value == "") return;
 
-  if ($(prog_field).data('autocomplete')) {
+  if ($(prog_field).data('ui-autocomplete-input')) {
     $(prog_field).autocomplete("destroy");
-    $(prog_field).removeData('autocomplete');
+    $(prog_field).removeData('ui-autocomplete-input');
   }
   $(prog_field)
      .prop('readOnly', false)
@@ -718,31 +759,41 @@ function setProgData ( data_type, p_data, orgn_value) {
             $(prog_field).prop('readOnly', true);
           }
           else {
+            var progs = [];
+              for (i = 0; i < data.length; i++) {
+                progs.push({label: data[i].prog + ' - ' + data[i].prog_title, value: data[i].prog });
+              }
               $(prog_field).autocomplete({
-                  source: function (request, response) {
-                    var lookup_url = "/nd_foapal_gem/fop_data/prog/f/" + fund_value + "/o/" + orgn_value;
-                    if (request.term != "")
-                      lookup_url += "/" + request.term;
-
-                    $.ajax({
-                      url: lookup_url, dataType: "json", delay: 1000,
-                      error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        do_alert("Lookup error for programs. If your fund, organization and program values are valid, please confirm that the financial data web services are running. (" + errorThrown + ")");
-                       },
-                      success: function (data) {
-                        response( $.map(data, function( item) {
-                          return {
-                            label: item.prog + " - " + item.prog_title,
-                            value: item.prog
-                          }
-                        }));
-                      }
-                    });
-                  },
-                  select: function (event, ui) {
-                    this.title = ui.item.label;
-                    setDescriptionField ( "prog", this, ui.item.label)
-
+                source: progs,
+//                  source: function (request, response) {
+//                    var lookup_url = "/nd_foapal_gem/fop_data/prog/f/" + fund_value + "/o/" + orgn_value;
+//                    if (request.term != "")
+//                      lookup_url += "/" + request.term;
+//
+//                    $.ajax({
+//                    url: lookup_url, dataType: "json", delay: 1000,
+//                      error: function(XMLHttpRequest, textStatus, errorThrown) {
+//                        do_alert("Lookup error for programs. If your fund, organization and program values are valid, please confirm that the financial data web services are running. (" + errorThrown + ")");
+//                       },
+//                      success: function (data) {
+//                        response( $.map(data, function( item) {
+//                          return {
+//                            label: item.prog + " - " + item.prog_title,
+//                            value: item.prog
+//                          }
+//                        }));
+//                      }
+//                    });
+//                  },
+//                  select: function (event, ui) {
+//                    this.title = ui.item.label;
+//                    setDescriptionField ( "prog", this, ui.item.label)
+//
+//                  },
+                  change: function ( event) {
+//                    event.stopImmediatePropagation();
+                    setFoapalPartTitle(this,"prog",event.currentTarget.value)
+                    $( this ).removeClass( "ui-autocomplete-loading" )
                   },
                   minLength: 0
                 })
@@ -892,7 +943,7 @@ function validate_foapal( fund, orgn, acct, prog, actv, locn) {
 
 function loadInitialFoapalAutocomplete () {
   var foapal_data_rows = $('#foapal_table .foapal_table_data_row');
-  var foapal_fields = ["fund","orgn","acct","acct_full", "prog","actv","locn"];
+  var foapal_fields = ["fund","orgn_data","orgn_full","acct_data","acct_full", "prog","actv","locn"];
 
   for (i = 0; i < foapal_data_rows.length; i++) {
     var foapal_row_object = foapal_data_rows[i];
