@@ -215,7 +215,8 @@ function setFoapalPartsTitles(row_number,foap_parts) {
   for (j = 0; j < foap_parts.length; j++)  {
     var row_string = '.foapal_table_data_row:nth-child(' + row_number + ')';
     var input_field_string = '.' + foapal_fields[foapal_fields_index] + '_input';
-    var input_fld = $(row_string + ' ' + input_field_string );
+    var input_fld_row = $(row_string);
+    var input_fld = $(row_fld_row).find(input_field_string );
     if (input_fld.length == 0) {
       foapal_fields_index++;
       var input_field_string = '.' + foapal_fields[foapal_fields_index] + '_input:first';
