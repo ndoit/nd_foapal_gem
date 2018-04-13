@@ -79,6 +79,9 @@ function setTitle(span_field) {
 
 function setFoapalPartTitleOnly(span_field,data_type,search_value) {
 
+  if (search_value == '') {
+    return;
+  }
   var lookup_url = "/nd_foapal_gem/fop_data/" + data_type + "/" + search_value;
   if (search_value == 'Error' || search_value == 'No match') return;
   $.ajax({
@@ -170,6 +173,10 @@ function setLocnTitle(input_field,banner_data) {
 }
 
 function setFoapalPartTitle(input_field,data_type,search_value) {
+  if (search_value == '') {
+    return;
+  }
+  
   var data_type_base = data_type.substring(0,4);
   var lookup_url = "/nd_foapal_gem/fop_data/" + data_type_base + "/" + search_value;
   if (search_value == 'Error' || search_value == 'No match') return;
@@ -210,19 +217,19 @@ function setFoapalPartTitle(input_field,data_type,search_value) {
 }
 
 function setFoapalPartsTitles(row_number,foap_parts) {
-  var foapal_fields = ["fund","orgn_data","orgn_full","acct_data","acct_full", "prog","actv","locn"];
+  var foapal_fields = ["fund","orgn_data","orgn","acct_data","acct_full", "prog","actv","locn"];
   var foapal_fields_index = 0;
+  var row_string = '.foapal_table_data_row';
+  var input_fld_row = $(row_string)[row_number];
   for (j = 0; j < foap_parts.length; j++)  {
-    var row_string = '.foapal_table_data_row:nth-child(' + row_number + ')';
     var input_field_string = '.' + foapal_fields[foapal_fields_index] + '_input';
-    var input_fld_row = $(row_string);
-    var input_fld = $(row_fld_row).find(input_field_string );
+    var input_fld = $(input_fld_row).find(input_field_string );
     if (input_fld.length == 0) {
       foapal_fields_index++;
-      var input_field_string = '.' + foapal_fields[foapal_fields_index] + '_input:first';
-      input_fld = $(row_string + ' ' + input_field_string );
+      input_field_string = '.' + foapal_fields[foapal_fields_index] + '_input';
+      var input_fld = $(input_fld_row).find(input_field_string );
     }
-    setFoapalPartTitle(input_fld, foapal_fields[foapal_fields_index], foap_parts[j]);
+    setFoapalPartTitle(input_fld[0], foapal_fields[foapal_fields_index], foap_parts[j]);
     foapal_fields_index++;
   }
 }
