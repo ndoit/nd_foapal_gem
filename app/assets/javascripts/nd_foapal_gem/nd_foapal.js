@@ -1,3 +1,4 @@
+
 function nd_foapal_initialize() {
     setupFoapalAutocomplete();
     setOrgnFullAutocomplete();
@@ -220,7 +221,7 @@ function setFoapalPartsTitles(row_number,foap_parts) {
       var input_field_string = '.' + foapal_fields[foapal_fields_index] + '_input:first';
       input_fld = $(row_string + ' ' + input_field_string );
     }
-    setFoapalPartTitle(input_fld, foapal_fields[foapal_fields_index], foap_parts(j));
+    setFoapalPartTitle(input_fld, foapal_fields[foapal_fields_index], foap_parts[j]);
     foapal_fields_index++;
   }
 }
