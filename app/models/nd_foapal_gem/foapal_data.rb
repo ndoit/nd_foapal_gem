@@ -36,7 +36,6 @@ module NdFoapalGem
       self.valid?
       raise InvalidParams unless self.valid?
       url_open = URI.parse(self.lookup_url)
-      Rails::logger.debug("foap data search #{self.lookup_url.to_s}")
       search_results = JSON.parse(url_open.read)
 
       if search_results.empty?
