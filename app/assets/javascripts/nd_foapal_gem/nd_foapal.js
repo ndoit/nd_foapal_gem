@@ -11,7 +11,7 @@ function nd_foapal_initialize() {
 }
 
 function onReadySetFoapalTitlesOnly() {
-  var foap_parts = ["fund","orgn_data","orgn_full","acct_data","acct_full","prog","actv","prog"];
+  var foap_parts = ["fund","orgn", "orgn_data","orgn_full","acct_data","acct_full","prog","actv","prog"];
   for (j = 0; j < foap_parts.length; j++) {
     $('.' + foap_parts[j] + '_span').mouseenter( function() {
       if (this.title == "") {
@@ -23,7 +23,7 @@ function onReadySetFoapalTitlesOnly() {
 }
 
 function onReadySetFoapalTitlesDescriptions() {
-  var foap_parts = ["fund","orgn_data","orgn_full","acct_data","acct_full","prog","actv","prog"];
+  var foap_parts = ["fund","orgn","orgn_data","orgn_full","acct_data","acct_full","prog","actv","prog"];
   for (j = 0; j < foap_parts.length; j++) {
     $('.' + foap_parts[j] + '_input').mouseenter( function() {
       if (this.title == "" && this.value.length > 4) {
@@ -176,7 +176,7 @@ function setFoapalPartTitle(input_field,data_type,search_value) {
   if (search_value == '') {
     return;
   }
-  
+
   var data_type_base = data_type.substring(0,4);
   var lookup_url = "/nd_foapal_gem/fop_data/" + data_type_base + "/" + search_value;
   if (search_value == 'Error' || search_value == 'No match') return;
@@ -217,7 +217,7 @@ function setFoapalPartTitle(input_field,data_type,search_value) {
 }
 
 function setFoapalPartsTitles(row_number,foap_parts) {
-  var foapal_fields = ["fund","orgn_data","orgn","acct_data","acct_full", "prog","actv","locn"];
+  var foapal_fields = ["fund","orgn","orgn_data","orgn_full","acct_data","acct_full", "prog","actv","locn"];
   var foapal_fields_index = 0;
   var row_string = '.foapal_table_data_row';
   var input_fld_row = $(row_string)[row_number];
@@ -954,7 +954,7 @@ function validate_foapal( fund, orgn, acct, prog, actv, locn) {
 
 function loadInitialFoapalAutocomplete () {
   var foapal_data_rows = $('#foapal_table .foapal_table_data_row');
-  var foapal_fields = ["fund","orgn_data","orgn_full","acct_data","acct_full", "prog","actv","locn"];
+  var foapal_fields = ["fund","orgn","orgn_data","orgn_full","acct_data","acct_full", "prog","actv","locn"];
 
   for (i = 0; i < foapal_data_rows.length; i++) {
     var foapal_row_object = foapal_data_rows[i];
