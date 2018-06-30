@@ -39,15 +39,16 @@ module NdFoapalGem
     end
 
 		def foapal_string(foapal_record)
-		 fs = foapal_record.fund + "-" + foapal_record.orgn + "-" + foapal_record.acct  + "-" +  foapal_record.prog
-		 fs += "-" + foapal_record.actv.to_s unless foapal_record.actv.blank? && foapal_record.locn.blank?
-		 fs += "-" + foapal_record.locn.to_s unless foapal_record.locn.blank?
-		 fs
+			acct_output = foapal_record.acct
+			acct_output ||= '   '
+			fs = foapal_record.fund + "-" + foapal_record.orgn + "-" + acct_output + "-" +  foapal_record.prog
+			fs += "-" + foapal_record.actv.to_s unless foapal_record.actv.blank? && foapal_record.locn.blank?
+			fs += "-" + foapal_record.locn.to_s unless foapal_record.locn.blank?
+			fs
 		end
 
     def set_errors_from_foapal_validator(validator_results,record)
         v_errors = {}
-				Rails::logger.debug("validator results #{validator_results}")
         unless validator_results[0] && validator_results[0].has_key?('overall')
           error_string = "An error occurred while trying to validate FOAP[AL] values.  "
           error_string += "Please verify that the Notre Dame financial data web service is available. "
@@ -56,7 +57,6 @@ module NdFoapalGem
         end
         vr = validator_results[0]
         return v_errors if vr["overall"] == 'valid'
-
         error_string = "The FOAP[AL] #{foapal_string(record)} is invalid."
         v_errors[:fund] = "Fund #{record.fund} is invalid." if vr["fund"] == "invalid" || vr["fund"] == "null"
         v_errors[:orgn] = "Organization #{record.orgn} is invalid." if vr["orgn"] == "invalid" || vr["orgn"] == "null"
@@ -64,6 +64,7 @@ module NdFoapalGem
         v_errors[:prog] = "Program #{record.prog} is invalid." if vr["prog"] == "invalid" || vr["prog"] == "null"
         v_errors[:actv] = "Activity #{record.actv} is invalid." if vr["actv"] == "invalid"
         v_errors[:locn] = "Location #{record.locn} is invalid." if vr["locn"] == "invalid"
+
         unless vr["foapal"].blank?
           case vr["foapal"][0-9]
           when "BAD DEFAULTS FOR ORGN/PROG"
@@ -80,14 +81,13 @@ module NdFoapalGem
 
         rescue => e
             Rails::logger.error("Error in FoapalValidator: #{e.message}")
-            error_string = "An error occurred while trying to validate FOAP[AL] values.  "
+	          error_string = "An error occurred while trying to validate FOAP[AL] values.  "
             error_string += "Please verify that the Notre Dame financial data web service is available. (#{e.message})"
             v_errors[:base] = error_string
             return v_errors
     end
 
 		def validate_foapal(record,validation_type)
-
 				f = NdFoapalGem::FoapalData.new( data_type: validation_type,
 					fund: record.fund, orgn: record.orgn, acct: record.acct, prog: record.prog, actv: record.actv, locn: record.locn)
 				unless f.valid?
@@ -102,6 +102,8 @@ module NdFoapalGem
 				v_errors.each do |field_symbol,error|
 					record.errors[field_symbol] << error
 				end
+		rescue => e
+			Rails::logger.error("Error in validate_foapal #{e.message}")
 		end
 
 	end

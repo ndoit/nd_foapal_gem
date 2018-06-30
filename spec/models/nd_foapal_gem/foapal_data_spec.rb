@@ -114,6 +114,20 @@ module NdFoapalGem
       expect(fd.errors[:base]).to include('Check your foapal entries.  Fund, Organization, Account, Program must be entered.')
     end
 
+    it "requires a value in fund, orgn and prog for fopal validation" do
+      fd = NdFoapalGem::FoapalData.new({data_type: 'validate', fund: nil, orgn: '34000',  prog: '10000'})
+      fd.valid?
+      expect(fd.errors[:base]).to include('Check your foapal entries.  Fund, Organization,  Program must be entered.')
+      fd.fund = '100000'
+      fd.orgn = ''
+      fd.valid?
+      expect(fd.errors[:base]).to include('Check your foapal entries.  Fund, Organization, Program must be entered.')
+      fd.orgn = '34000'
+      fd.prog = nil
+      fd.valid?
+      expect(fd.errors[:base]).to include('Check your foapal entries.  Fund, Organization, Program must be entered.')
+    end
+
     it "requires a value in fund, orgn, acct and prog for payroll account validation" do
       fd = NdFoapalGem::FoapalData.new({data_type: 'validate_payroll', fund: nil, orgn: '34000', acct: '72001', prog: '10000'})
       fd.valid?
