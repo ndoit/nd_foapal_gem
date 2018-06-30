@@ -31,3 +31,5 @@ config/hire_right_nginx_local
 restart.sh
 rspec.out
 rspec.xml
+
+spec/dummy/.env.local
