@@ -31,12 +31,20 @@ module NdFoapalGem
         raise StandardError, "An error occurred while querying data for fund #{fund}"
         return
       end
-			@rspa_accountant_net_id = fund_data[0]['rspa_accountant']
-      @rspa_accountant_first_name = fund_data[0]['rspa_accountant_first_name']
-      @rspa_accountant_last_name = fund_data[0]['rspa_accountant_last_name']
-      @predecessor_fund_type = fund_data[0]["predecessor_fund_type"]
-      @fund_type = fund_data[0]["fund_type"]
-      @fund_description = fund_data[0]["fund_title"]
+      if fund_data[0]['fund'] == fund
+        set_fund_attributes_from_hash(fund_data[0])
+      else
+        set_fund_attributes_from_hash({})
+      end
+    end
+
+    def set_fund_attributes_from_hash(fund_data)
+      @rspa_accountant_net_id = fund_data['rspa_accountant']
+      @rspa_accountant_first_name = fund_data['rspa_accountant_first_name']
+      @rspa_accountant_last_name = fund_data['rspa_accountant_last_name']
+      @predecessor_fund_type = fund_data["predecessor_fund_type"]
+      @fund_type = fund_data["fund_type"]
+      @fund_description = fund_data["fund_title"]
     end
 
 		def is_grant_or_cost_share_fund?

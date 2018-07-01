@@ -27,11 +27,18 @@ module NdFoapalGem
         raise StandardError, "An error occurred while querying data for acct #{acct} #{acct_data[0]['acct_title']}"
         return
       end
-      @acct_type = acct_data[0]["acct_type"]
-      @acct_class = acct_data[0]["acct_class"]
-      @predecessor_acct_type = acct_data[0]["predecessor_acct_type"]
-      @acct_description = acct_data[0]["acct_title"]
+      if acct_data[0]['acct'] == acct
+        set_acct_attributes_from_hash(acct_data[0])
+      else
+        set_acct_attributes_from_hash({})
+      end
+    end
 
+    def set_acct_attributes_from_hash(acct_data)
+      @acct_type = acct_data["acct_type"]
+      @acct_class = acct_data["acct_class"]
+      @predecessor_acct_type = acct_data["predecessor_acct_type"]
+      @acct_description = acct_data["acct_title"]
     end
 
 	end

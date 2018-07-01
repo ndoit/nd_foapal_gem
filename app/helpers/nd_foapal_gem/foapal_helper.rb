@@ -19,7 +19,7 @@ module NdFoapalGem
       return true if fund.blank?
       if fund_type.blank? || predecessor_fund_type.blank?
         f = NdFoapalGem::Fund.new(fund)
-				f.set_fund_attributes
+				f.set_fund_attributes if f.valid?
         self.predecessor_fund_type = f.predecessor_fund_type
         self.fund_type = f.fund_type
         self.fund_description = f.fund_description
@@ -30,7 +30,7 @@ module NdFoapalGem
       return true if acct.blank?
       if acct_type.blank? && predecessor_acct_type.blank? && acct_class.blank?
         a = NdFoapalGem::Acct.new(acct)
-        a.set_acct_attributes
+        a.set_acct_attributes if a.valid?
         self.acct_type = a.acct_type
         self.acct_class = a.acct_class
         self.predecessor_acct_type = a.predecessor_acct_type
