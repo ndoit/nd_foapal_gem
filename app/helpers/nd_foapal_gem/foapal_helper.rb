@@ -18,7 +18,7 @@ module NdFoapalGem
     def set_fund_type
       return true if fund.blank?
       if fund_type.blank? || predecessor_fund_type.blank?
-        f = NdFoapalData::Fund.new(fund)
+        f = NdFoapalGem::Fund.new(fund)
 				f.set_fund_attributes
         self.predecessor_fund_type = f.predecessor_fund_type
         self.fund_type = f.fund_type
