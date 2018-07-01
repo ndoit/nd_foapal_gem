@@ -2,6 +2,13 @@
 module NdFoapalGem
 	module FoapalHelper
 
+		FOAPAL_LABELS = {fund: 'Fund', orgn: 'Organization', acct: 'Account', prog: 'Program', actv: 'Activity', locn: 'Location'}
+
+		def foapal_label(p)
+			FOAPAL_LABELS[p.to_sym]
+		end
+		
+
 		def account_type_cannot_be_transfer
       errors.add(:acct,"Account #{acct} is invalid. Transfer accounts cannot be used on this transactions.") if self.predecessor_acct_type == '80'
     end
