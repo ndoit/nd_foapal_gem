@@ -133,6 +133,17 @@ f.valid? # validates that the passed values are valid for FOAP data and validati
 search_results = f.search
 ** search_results contains the string returned from the ND Foapal validator
 
+### Helper: NdFoapalGem::FoapalHelper ###
+Has some very helpful methods.
+
+Usage:
+include NdFoapalGem::FoapalHelper
+ 
+fop_lookup(foapal_part, part_value) - returns the matching data
+set_description(foapal_part) - sets the corresponding description attribute for a given foapal_part
+
+more...
+
 
 ### Who do I talk to? ###
 
