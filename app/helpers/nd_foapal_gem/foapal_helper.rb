@@ -7,7 +7,7 @@ module NdFoapalGem
 		def foapal_label(p)
 			FOAPAL_LABELS[p.to_sym]
 		end
-		
+
 
 		def account_type_cannot_be_transfer
       errors.add(:acct,"Account #{acct} is invalid. Transfer accounts cannot be used on this transactions.") if self.predecessor_acct_type == '80'
@@ -15,7 +15,7 @@ module NdFoapalGem
 
 		def fop_lookup(foap_part,part_value)  # rename foap_lookup
 			f = NdFoapalGem::FoapalData.new( data_type: foap_part)
-			f[foap_part.to_s] = part_value
+			f.send("#{foap_part}=",part_value)
 			foap_part_results = f.search
 		rescue => e
 			Rails::logger.error("Error in FOP lookup #{e.message} on #{foap_part} #{part_value}")
@@ -44,6 +44,14 @@ module NdFoapalGem
         self.acct_description = a.acct_description
       end
     end
+
+		def set_description(foapal_element)
+			element_data = fop_lookup(foapal_element,self[foapal_element.to_sym])
+			unless element_data.empty?
+				self["#{foapal_element}_description".to_sym] = element_data[0]["#{foapal_element}_title"]
+			end
+		end
+
 
 		def foapal_string(foapal_record)
 			acct_output = foapal_record.acct
