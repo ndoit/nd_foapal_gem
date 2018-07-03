@@ -46,9 +46,10 @@ module NdFoapalGem
     end
 
 		def set_description(foapal_element)
+			return if self[foapal_element.to_sym].blank?
 			element_data = fop_lookup(foapal_element,self[foapal_element.to_sym])
 			unless element_data.empty?
-				self["#{foapal_element}_description".to_sym] = element_data[0]["#{foapal_element}_title"]
+				self["#{foapal_element}_description".to_sym] = element_data[0]["#{foapal_element}_title"] if self[foapal_element.to_sym] ==  element_data[0]["#{foapal_element}"]
 			end
 		end
 
