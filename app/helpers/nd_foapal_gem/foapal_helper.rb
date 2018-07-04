@@ -10,12 +10,12 @@ module NdFoapalGem
 
 
 		def account_type_cannot_be_transfer
+			self.set_acct_type if self.predecessor_acct_type.blank?
       errors.add(:acct,"Account #{acct} is invalid. Transfer accounts cannot be used on this transactions.") if self.predecessor_acct_type == '80'
     end
 
 		def fop_lookup(foap_part,part_value)  # rename foap_lookup
-			f = NdFoapalGem::FoapalData.new( data_type: foap_part)
-			f.send("#{foap_part}=",part_value)
+			f = NdFoapalGem::FoapalData.new( data_type: foap_part, search_string: part_value)
 			foap_part_results = f.search
 		rescue => e
 			Rails::logger.error("Error in FOP lookup #{e.message} on #{foap_part} #{part_value}")
@@ -24,10 +24,10 @@ module NdFoapalGem
 
     def set_fund_type
       return true if fund.blank?
-      if fund_type.blank? || predecessor_fund_type.blank?
+      if fund_changed? || self.new_record?
         f = NdFoapalGem::Fund.new(fund)
 				f.set_fund_attributes if f.valid?
-        self.predecessor_fund_type = f.predecessor_fund_type
+	      self.predecessor_fund_type = f.predecessor_fund_type
         self.fund_type = f.fund_type
         self.fund_description = f.fund_description
       end
@@ -35,7 +35,7 @@ module NdFoapalGem
 
     def set_acct_type
       return true if acct.blank?
-      if acct_type.blank? && predecessor_acct_type.blank? && acct_class.blank?
+      if acct_changed? || self.new_record?
         a = NdFoapalGem::Acct.new(acct)
         a.set_acct_attributes if a.valid?
         self.acct_type = a.acct_type
@@ -46,18 +46,17 @@ module NdFoapalGem
     end
 
 		def set_description(foapal_element)
-			return if self[foapal_element.to_sym].blank?
-			element_data = fop_lookup(foapal_element,self[foapal_element.to_sym])
+			return if self.send(foapal_element).blank?
+			element_data = fop_lookup(foapal_element,self.send(foapal_element))
 			unless element_data.empty?
-				self["#{foapal_element}_description".to_sym] = element_data[0]["#{foapal_element}_title"] if self[foapal_element.to_sym] ==  element_data[0]["#{foapal_element}"]
+				self.send("#{foapal_element}_description=","#{element_data[0]["#{foapal_element}_title"]}")  if self.send(foapal_element) ==  element_data[0]["#{foapal_element}"]
 			end
 		end
-
 
 		def foapal_string(foapal_record)
 			acct_output = foapal_record.acct
 			acct_output ||= '   '
-			fs = foapal_record.fund + "-" + foapal_record.orgn + "-" + acct_output + "-" +  foapal_record.prog
+			fs = foapal_record.fund.to_s + "-" + foapal_record.orgn.to_s + "-" + acct_output.to_s + "-" +  foapal_record.prog.to_s
 			fs += "-" + foapal_record.actv.to_s unless foapal_record.actv.blank? && foapal_record.locn.blank?
 			fs += "-" + foapal_record.locn.to_s unless foapal_record.locn.blank?
 			fs
