@@ -138,7 +138,7 @@ GEM
       httparty (~> 0.9)
       persistent_http (< 2)
     public_suffix (3.0.1)
-    rack (1.6.8)
+    rack (1.6.13)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.2.7.1)
