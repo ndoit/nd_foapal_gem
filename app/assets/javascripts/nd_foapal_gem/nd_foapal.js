@@ -532,6 +532,7 @@ function setOrgnFullAutocomplete() {
     },
     minLength: 1,
     delay: 500,
+    autoFocus: true,
     select: function (event, ui) {
       var label = ui.item.label.split(' - ');
       var banner_data = new Object;
