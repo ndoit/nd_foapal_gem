@@ -28,7 +28,7 @@ Add following to application.js
 
 Setup .env.local
 ```
-You will need to have FINANCE_API_BASE and FINANCE_API_KEY defined
+You will need to have FIN_API_BASE and FINANCE_API_KEY defined
 ```
 
 ### How To ###
