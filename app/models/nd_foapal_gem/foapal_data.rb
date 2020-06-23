@@ -49,12 +49,17 @@ module NdFoapalGem
             return search_results
       end
 
-      rescue => e
+      rescue StandardError => e
         case e
         when InvalidParams
           return JSON.parse('[{ "' + data_type + '": "Error", "' + data_type+'_title": "Invalid Parameters"}]')
         when OpenURI::HTTPError
-          return JSON.parse('[{ "' + data_type + '": "None", "' + data_type+'_title": "No matching records"}]')
+          # FIXME: bad, there might be other error conditions in HTTPError that aren't "no matching records"
+          if e.message == "422 Unprocessable Entity"
+            return JSON.parse('[{ "' + data_type + '": "Error", "' + data_type+'_title": "A FOAPAL service error has occurred"}]')
+          else
+            return JSON.parse('[{ "' + data_type + '": "None", "' + data_type+'_title": "No matching records"}]')
+          end
         when SocketError
           return JSON.parse('[{ "' + data_type + '": "Error", "' + data_type+'_title": "A socket error has occurred"}]')
         when URI::InvalidURIError
