@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    nd_foapal_gem (0.5.0)
+    nd_foapal_gem (0.6.0)
       dotenv
       foundation-rails
       jquery-rails
